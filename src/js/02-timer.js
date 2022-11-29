@@ -23,17 +23,19 @@ const options = {
 
     onClose(selectedDates) {
       console.log(selectedDates[0]);
-      if (selectedDates[0] - new Date() <= 0) {
+      if (selectedDates[0] - new Date() < 0) {
         alert("Please choose a date in the future");
       } 
       else {
         refs.button.disabled = false;
+
         
-        refs.button.addEventListener('click', () =>
-    setInterval(() => {
+    refs.button.addEventListener('click', () => {
+
+      let timerId = setInterval(() => {
       const currentTime = new Date(); 
       const targetData = selectedDates[0];
-      const ms = targetData - currentTime;
+      const ms = targetData - currentTime;  
       
       convertMs(ms);
       
@@ -57,10 +59,14 @@ const options = {
       refs.startHours.textContent = addLeadingZero(`${hours}`);
       refs.startMinutes.textContent = addLeadingZero(`${minutes}`);
       refs.startSeconds.textContent = addLeadingZero(`${seconds}`);
-      };      
+      };  
       
-    }, 1000));
-     
+      if(ms < 1000) {
+        clearInterval(timerId)
+      }
+      
+    }, 1000)});
+  
       };
       
     },
